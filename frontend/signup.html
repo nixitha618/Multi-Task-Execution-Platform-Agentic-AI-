@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en" class="auth-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Create Account — Agentic AI Platform</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Theme Initializer (Anti-flash) -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('agentic_ai_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+</head>
+<body class="auth-page-body">
+
+    <div class="auth-split-wrapper">
+
+        <!-- LEFT PANEL: SHOWCASE & STATS (Modeled after reference screenshot 1) -->
+        <div class="auth-showcase-panel">
+            <div class="auth-showcase-top">
+                <!-- Brand Row -->
+                <div class="auth-brand-row" style="display:flex; justify-content:space-between; align-items:center;">
+                    <a href="/home" style="text-decoration:none; display:flex; align-items:center; gap:0.75rem;">
+                        <div class="logo-badge">AGENTIC AI</div>
+                        <!-- <span class="brand-title-large">Agentic AI</span> -->
+                    </a>
+                    <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Switch Light/Dark Mode" aria-label="Toggle Theme" style="padding:0.35rem 0.65rem;">
+                        ☀️
+                    </button>
+                </div>
+
+                <!-- Live Active Badge -->
+                <div class="live-pulse-badge">
+                    <span class="pulse-dot"></span>
+                    <span>7 Autonomous Agents Active</span>
+                </div>
+
+                <!-- Showcase Headline -->
+                <h1 class="showcase-hero-heading">
+                    Hey there! 👋<br>
+                    Your <span class="gradient-word">autonomous AI</span><br>
+                    journey starts <span class="cyan-word">right here.</span>
+                </h1>
+
+                <p class="showcase-tagline">
+                    Say goodbye to manual task juggling. Let autonomous agents plan, execute, and verify your multi-step workflows.
+                </p>
+
+                <!-- 2x2 Metric Grid -->
+                <div class="metric-grid-2x2">
+                    <div class="metric-card-item">
+                        <div class="metric-val">7 <span style="font-size:1.1rem; color:var(--primary);">🤖</span></div>
+                        <div class="metric-desc">Specialized Agent Swarm</div>
+                    </div>
+                    <div class="metric-card-item">
+                        <div class="metric-val">99.4% <span style="font-size:1.1rem; color:var(--accent-green);">⚡</span></div>
+                        <div class="metric-desc">Task Execution Precision</div>
+                    </div>
+                    <div class="metric-card-item">
+                        <div class="metric-val">Bcrypt <span style="font-size:1.1rem; color:var(--accent-cyan);">🔒</span></div>
+                        <div class="metric-desc">12-Round Salted Vault</div>
+                    </div>
+                    <div class="metric-card-item">
+                        <div class="metric-val">Real-Time <span style="font-size:1.1rem; color:var(--accent-amber);">⚡</span></div>
+                        <div class="metric-desc">ChromaDB RAG & Sandbox</div>
+                    </div>
+                </div>
+
+                <!-- Checkmarks -->
+                <div class="showcase-checkmarks">
+                    <div class="check-item">
+                        <span class="check-item-icon">✓</span>
+                        <span>Free multi-agent workspace — zero credit card required</span>
+                    </div>
+                    <div class="check-item">
+                        <span class="check-item-icon">✓</span>
+                        <span>Salted bcrypt credential encryption saved directly in SQLite</span>
+                    </div>
+                    <div class="check-item">
+                        <span class="check-item-icon">✓</span>
+                        <span>Instant access to ChromaDB document RAG & Workflow Studio</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-showcase-footer">
+                <span>© 2026 Agentic AI Platform • Autonomous Multi-Task Execution</span>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL: SIGN UP FORM (Modeled after reference screenshot 1) -->
+        <div class="auth-form-panel">
+            <div class="auth-form-container">
+
+                <div class="auth-form-header">
+                    <h2 class="auth-form-title">Create account ✨</h2>
+                    <div class="auth-form-switch-prompt">
+                        Already have an account? <a href="/login">Sign In</a>
+                    </div>
+                </div>
+
+                <!-- Alert Message Banner -->
+                <div id="authAlertBanner" class="auth-alert" style="display:none;"></div>
+
+                <form id="signUpForm" onsubmit="handleSignUp(event)">
+                    <!-- Name Fields (2 Columns) -->
+                    <div class="form-row-2col">
+                        <div class="auth-form-group">
+                            <label for="firstName">First Name</label>
+                            <div class="input-with-icon">
+                                <span class="input-icon">👤</span>
+                                <input type="text" id="firstName" placeholder="First name" autocomplete="given-name">
+                            </div>
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="lastName">Last Name</label>
+                            <div class="input-with-icon">
+                                <span class="input-icon">👤</span>
+                                <input type="text" id="lastName" placeholder="Last name" autocomplete="family-name">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Username Field -->
+                    <div class="auth-form-group">
+                        <label for="username">Username (Optional)</label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">🏷️</span>
+                            <input type="text" id="username" placeholder="Choose a username" autocomplete="username">
+                        </div>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="auth-form-group">
+                        <label for="email">Email Address <span class="required">*</span></label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">✉️</span>
+                            <input type="email" id="email" placeholder="e.g. name@example.com" required autocomplete="email" oninput="validateEmailLive()">
+                        </div>
+                        <div id="emailHint" class="field-hint"></div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="auth-form-group">
+                        <label for="password">Password <span class="required">*</span></label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">🔒</span>
+                            <input type="password" id="password" placeholder="Create a strong password" required autocomplete="new-password" oninput="validatePasswordLive()">
+                            <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility('password', this)" title="Show/Hide Password">👁️</button>
+                        </div>
+
+                        <!-- Strength Meter Bar -->
+                        <div class="strength-meter-container">
+                            <div class="strength-bar-track">
+                                <div id="strengthBarFill" class="strength-bar-fill"></div>
+                            </div>
+                            <span id="strengthText" class="strength-label">Enter password</span>
+                        </div>
+
+                        <!-- Live Criteria Checklist -->
+                        <div class="password-criteria-list">
+                            <div class="criterion" id="critLength">
+                                <span class="crit-icon">⚪</span> 8+ characters
+                            </div>
+                            <div class="criterion" id="critUpper">
+                                <span class="crit-icon">⚪</span> Uppercase (A-Z)
+                            </div>
+                            <div class="criterion" id="critLower">
+                                <span class="crit-icon">⚪</span> Lowercase (a-z)
+                            </div>
+                            <div class="criterion" id="critDigit">
+                                <span class="crit-icon">⚪</span> Number (0-9)
+                            </div>
+                            <div class="criterion" id="critSpecial" style="grid-column: span 2;">
+                                <span class="crit-icon">⚪</span> Special character (!@#$%^&*...)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Confirm Password Field -->
+                    <div class="auth-form-group">
+                        <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">🔐</span>
+                            <input type="password" id="confirmPassword" placeholder="Confirm your password" required autocomplete="new-password" oninput="validateConfirmLive()">
+                            <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility('confirmPassword', this)" title="Show/Hide Password">👁️</button>
+                        </div>
+                        <div id="matchHint" class="field-hint"></div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn-auth-action" id="btnSubmit">
+                        <span id="btnSubmitText">🚀 Create My Account</span>
+                    </button>
+
+                    <div class="auth-terms-note">
+                        By signing up, you agree to our Terms of Service & Privacy Policy.<br>
+                        Credentials are encrypted with 12-round salted bcrypt in SQLite database.
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Client-side Validation & API Integration Script -->
+    <script>
+        const API_BASE = '/api/v1';
+
+        // Global Theme Management
+        function initTheme() {
+            const savedTheme = localStorage.getItem('agentic_ai_theme') || 'dark';
+            applyTheme(savedTheme);
+        }
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('agentic_ai_theme', theme);
+            const btn = document.getElementById('themeToggleBtn');
+            if (btn) {
+                btn.innerHTML = theme === 'light' ? '🌙' : '☀️';
+                btn.setAttribute('title', theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode');
+            }
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'dark';
+            applyTheme(current === 'light' ? 'dark' : 'light');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+        });
+
+        function togglePasswordVisibility(inputId, btnEl) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            if (input.type === 'password') {
+                input.type = 'text';
+                btnEl.innerText = '🙈';
+            } else {
+                input.type = 'password';
+                btnEl.innerText = '👁️';
+            }
+        }
+
+        function validateEmailFormat(email) {
+            const re = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+            return re.test(String(email).trim());
+        }
+
+        function validateEmailLive() {
+            const el = document.getElementById('email');
+            const hint = document.getElementById('emailHint');
+            const val = el.value.trim();
+
+            if (!val) {
+                hint.innerText = '';
+                el.classList.remove('input-valid', 'input-invalid');
+                return false;
+            }
+
+            if (validateEmailFormat(val)) {
+                hint.innerText = '✓ Valid email format';
+                hint.className = 'field-hint valid';
+                el.classList.add('input-valid');
+                el.classList.remove('input-invalid');
+                return true;
+            } else {
+                hint.innerText = '✗ Please enter a valid email address (e.g. name@example.com)';
+                hint.className = 'field-hint invalid';
+                el.classList.add('input-invalid');
+                el.classList.remove('input-valid');
+                return false;
+            }
+        }
+
+        function validatePasswordLive() {
+            const pwdInput = document.getElementById('password');
+            const strengthBar = document.getElementById('strengthBarFill');
+            const strengthText = document.getElementById('strengthText');
+            const pwd = pwdInput.value;
+
+            const hasLen = pwd.length >= 8;
+            const hasUpper = /[A-Z]/.test(pwd);
+            const hasLower = /[a-z]/.test(pwd);
+            const hasDigit = /[0-9]/.test(pwd);
+            const hasSpecial = /[!@#$%^&*()_+\-=\[\]{}|;:,.<>?~`\\/]/.test(pwd);
+
+            const updateCrit = (id, met) => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (met) {
+                        el.classList.add('met');
+                        el.querySelector('.crit-icon').innerText = '✅';
+                    } else {
+                        el.classList.remove('met');
+                        el.querySelector('.crit-icon').innerText = '⚪';
+                    }
+                }
+            };
+
+            updateCrit('critLength', hasLen);
+            updateCrit('critUpper', hasUpper);
+            updateCrit('critLower', hasLower);
+            updateCrit('critDigit', hasDigit);
+            updateCrit('critSpecial', hasSpecial);
+
+            const score = [hasLen, hasUpper, hasLower, hasDigit, hasSpecial].filter(Boolean).length;
+
+            if (strengthBar && strengthText) {
+                if (!pwd) {
+                    strengthBar.style.width = '0%';
+                    strengthBar.style.backgroundColor = 'transparent';
+                    strengthText.innerText = 'Enter password';
+                    strengthText.style.color = 'var(--text-muted)';
+                } else if (score <= 2) {
+                    strengthBar.style.width = '33%';
+                    strengthBar.style.backgroundColor = 'var(--accent-rose)';
+                    strengthText.innerText = 'Weak';
+                    strengthText.style.color = 'var(--accent-rose)';
+                } else if (score < 5) {
+                    strengthBar.style.width = '66%';
+                    strengthBar.style.backgroundColor = 'var(--accent-amber)';
+                    strengthText.innerText = 'Medium';
+                    strengthText.style.color = 'var(--accent-amber)';
+                } else {
+                    strengthBar.style.width = '100%';
+                    strengthBar.style.backgroundColor = 'var(--accent-green)';
+                    strengthText.innerText = 'Strong';
+                    strengthText.style.color = 'var(--accent-green)';
+                }
+            }
+
+            if (score === 5) {
+                pwdInput.classList.add('input-valid');
+                pwdInput.classList.remove('input-invalid');
+            } else if (pwd.length > 0) {
+                pwdInput.classList.add('input-invalid');
+                pwdInput.classList.remove('input-valid');
+            } else {
+                pwdInput.classList.remove('input-valid', 'input-invalid');
+            }
+
+            validateConfirmLive();
+            return score === 5;
+        }
+
+        function validateConfirmLive() {
+            const pwd = document.getElementById('password')?.value;
+            const confirmInput = document.getElementById('confirmPassword');
+            const hint = document.getElementById('matchHint');
+            const confirmVal = confirmInput?.value;
+
+            if (!confirmVal) {
+                hint.innerText = '';
+                confirmInput.classList.remove('input-valid', 'input-invalid');
+                return false;
+            }
+
+            if (pwd === confirmVal) {
+                hint.innerText = '✓ Passwords match';
+                hint.className = 'field-hint valid';
+                confirmInput.classList.add('input-valid');
+                confirmInput.classList.remove('input-invalid');
+                return true;
+            } else {
+                hint.innerText = '✗ Passwords do not match';
+                hint.className = 'field-hint invalid';
+                confirmInput.classList.add('input-invalid');
+                confirmInput.classList.remove('input-valid');
+                return false;
+            }
+        }
+
+        function showAlert(msg, type = 'error') {
+            const banner = document.getElementById('authAlertBanner');
+            if (!banner) return;
+            banner.className = `auth-alert ${type}`;
+            banner.innerText = msg;
+            banner.style.display = 'block';
+        }
+
+        function clearAlert() {
+            const banner = document.getElementById('authAlertBanner');
+            if (!banner) return;
+            banner.style.display = 'none';
+            banner.innerText = '';
+        }
+
+        async function handleSignUp(e) {
+            e.preventDefault();
+            clearAlert();
+
+            const firstName = document.getElementById('firstName')?.value.trim();
+            const lastName = document.getElementById('lastName')?.value.trim();
+            const username = document.getElementById('username')?.value.trim() || null;
+            const email = document.getElementById('email')?.value.trim();
+            const password = document.getElementById('password')?.value;
+            const confirmPassword = document.getElementById('confirmPassword')?.value;
+            const btn = document.getElementById('btnSubmit');
+            const btnText = document.getElementById('btnSubmitText');
+
+            const fullName = [firstName, lastName].filter(Boolean).join(' ') || null;
+
+            // Preflight validation checks
+            if (!validateEmailFormat(email)) {
+                showAlert("Please enter a valid email address.", "error");
+                return;
+            }
+            if (!validatePasswordLive()) {
+                showAlert("Password must satisfy all 5 security criteria (8+ chars, uppercase, lowercase, number, special).", "error");
+                return;
+            }
+            if (password !== confirmPassword) {
+                showAlert("Password confirmation does not match.", "error");
+                return;
+            }
+
+            btn.disabled = true;
+            btnText.innerText = "Creating account & saving to SQLite...";
+
+            try {
+                const res = await fetch(`${API_BASE}/auth/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                        confirm_password: confirmPassword,
+                        full_name: fullName,
+                        username: username
+                    })
+                });
+
+                const data = await res.json();
+                if (!res.ok) {
+                    throw new Error(data.detail || "Registration failed.");
+                }
+
+                // Store user and token in localStorage
+                localStorage.setItem('agentic_ai_user', JSON.stringify(data.user));
+                if (data.token) {
+                    localStorage.setItem('agentic_ai_token', data.token);
+                }
+
+                showAlert("Account successfully registered! Redirecting to dashboard...", "success");
+                btnText.innerText = "✓ Redirecting to Dashboard...";
+
+                // Redirect to dashboard immediately after registering
+                setTimeout(() => {
+                    window.location.href = '/dashboard';
+                }, 700);
+
+            } catch (err) {
+                showAlert(err.message, "error");
+                btn.disabled = false;
+                btnText.innerText = "🚀 Create My Account";
+            }
+        }
+    </script>
+</body>
+</html>

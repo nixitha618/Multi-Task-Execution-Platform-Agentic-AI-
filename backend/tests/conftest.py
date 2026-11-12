@@ -1,0 +1,6 @@
+import pytest
+from backend.app.core.database import init_db
+
+@pytest.fixture(autouse=True)
+async def setup_test_db():
+    await init_db()

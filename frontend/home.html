@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Agentic AI — Autonomous Multi-Task Execution Platform</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Theme Initializer (Anti-flash) -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('agentic_ai_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+</head>
+<body style="background-color: var(--bg-main); color: var(--text-main); font-family: var(--font-family);">
+
+    <!-- Top Navigation Bar (Modeled after sample landing page) -->
+    <header class="landing-navbar">
+        <div class="logo-container">
+            <div class="logo-badge">AGENTIC AI</div>
+            
+        </div>
+
+        <nav class="landing-nav-links">
+            <a href="#features">Features</a>
+            <a href="#agents">7-Agent Architecture</a>
+            <a href="#tools">Tool Ecosystem</a>
+            <a href="#security">Security & Vault</a>
+        </nav>
+
+        <div class="landing-nav-actions">
+            <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Switch Light/Dark Mode" aria-label="Toggle Theme">
+                ☀️
+            </button>
+            <a href="/dashboard" class="btn-nav-signin" id="navDashboardLink" style="display:none; border-color:var(--accent-cyan); color:var(--accent-cyan); text-decoration:none;">Dashboard →</a>
+            <a href="/login" class="btn-nav-signin" id="navSignInLink">Sign In</a>
+            <a href="/signup" class="btn-nav-getstarted" id="navSignUpLink">Get Started Free</a>
+        </div>
+    </header>
+
+    <!-- Hero Section (Modeled after reference screenshot 2) -->
+    <main>
+        <section class="landing-hero">
+            <div class="hero-pill-badge">
+                <span>⚡</span>
+                <span>Autonomous Multi-Agent Execution Platform</span>
+            </div>
+
+            <h1>
+                Orchestrate Complex Workflows <br>
+                <span class="gradient-purple-blue">Before Bottlenecks</span> Slow You Down
+            </h1>
+
+            <p class="hero-description">
+                Agentic AI coordinates 7 specialized intelligent agents with LangGraph orchestration, ChromaDB vector retrieval, and a secure tool ecosystem — transforming single-prompt goals into verified, executed results.
+            </p>
+
+            <div class="hero-cta-group">
+                <a href="/signup" class="btn-hero-primary">
+                    <span>🚀 Get Started Free</span>
+                </a>
+                <a href="#agents" class="btn-hero-secondary">
+                    <span>👁️ See How It Works</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="landing-section" style="border-top:1px solid var(--border-color);">
+            <div class="section-header-centered">
+                <div class="section-tag">Autonomous Capabilities</div>
+                <h2 class="section-title">Core Platform Features</h2>
+                <p class="section-subtitle">
+                    Engineered to handle end-to-end task automation with stateful memory, multi-agent orchestration, and verified outputs.
+                </p>
+            </div>
+
+            <!-- Features 3x2 Grid -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:1.5rem; margin-bottom:3rem;">
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:1.75rem;">
+                    <div style="font-size:1.8rem; margin-bottom:0.75rem;">🔄</div>
+                    <h3 style="font-size:1.15rem; color:#fff; margin-bottom:0.4rem;">LangGraph Multi-Agent Workflows</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">Decomposes multi-faceted user prompts into stateful directed acyclic graphs (DAGs) with dynamic cycles and self-healing evaluation loops.</p>
+                </div>
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:1.75rem;">
+                    <div style="font-size:1.8rem; margin-bottom:0.75rem;">🧠</div>
+                    <h3 style="font-size:1.15rem; color:#fff; margin-bottom:0.4rem;">Persistent Memory & Personalization</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">Arbitrary user preferences (e.g. 5 bullet points summary style, college affiliation, custom email signatures, chart color themes) injected directly into agent context.</p>
+                </div>
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:1.75rem;">
+                    <div style="font-size:1.8rem; margin-bottom:0.75rem;">📚</div>
+                    <h3 style="font-size:1.15rem; color:#fff; margin-bottom:0.4rem;">ChromaDB Vector Retrieval (RAG)</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">Sub-second semantic search over ingested PDF, DOCX, CSV, and text files using vector embeddings for grounded, hallucination-free reasoning.</p>
+                </div>
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:1.75rem;">
+                    <div style="font-size:1.8rem; margin-bottom:0.75rem;">⚡</div>
+                    <h3 style="font-size:1.15rem; color:#fff; margin-bottom:0.4rem;">Sandboxed Code & Analytics Execution</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">Isolated Python computational sandbox performing complex mathematics, statistical analysis, and customized matplotlib data visualizations.</p>
+                </div>
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:1.75rem;">
+                    <div style="font-size:1.8rem; margin-bottom:0.75rem;">📑</div>
+                    <h3 style="font-size:1.15rem; color:#fff; margin-bottom:0.4rem;">Multi-Format Output & Email Dispatch</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">Automatically compiles formatted PDF executive reports, downloadable markdown documents, and dispatches authenticated emails with file attachments.</p>
+                </div>
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:1.75rem;">
+                    <div style="font-size:1.8rem; margin-bottom:0.75rem;">⏱️</div>
+                    <h3 style="font-size:1.15rem; color:#fff; margin-bottom:0.4rem;">Autonomous Background Scheduling</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">Built-in APScheduler cron engine executing recurring agent tasks, automated reporting intervals, and persistent background job management.</p>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div style="border:1px solid var(--border-color); border-radius:14px; background:rgba(17,24,39,0.7); padding:1.75rem 1.5rem;">
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1.5rem; text-align:center;">
+                    <div>
+                        <div style="font-size:2rem; font-weight:800; color:#fff;">7</div>
+                        <div style="font-size:0.8rem; color:var(--accent-cyan); font-weight:600; text-transform:uppercase;">Specialized Agents</div>
+                        <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">LangGraph multi-agent DAG</div>
+                    </div>
+                    <div>
+                        <div style="font-size:2rem; font-weight:800; color:#fff;">Bcrypt</div>
+                        <div style="font-size:0.8rem; color:var(--accent-green); font-weight:600; text-transform:uppercase;">12-Round Salted Vault</div>
+                        <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">Stored in SQLite database</div>
+                    </div>
+                    <div>
+                        <div style="font-size:2rem; font-weight:800; color:#fff;">ChromaDB</div>
+                        <div style="font-size:0.8rem; color:#a855f7; font-weight:600; text-transform:uppercase;">Vector RAG Search</div>
+                        <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">Sub-second similarity retrieval</div>
+                    </div>
+                    <div>
+                        <div style="font-size:2rem; font-weight:800; color:#fff;">Real-Time</div>
+                        <div style="font-size:0.8rem; color:var(--accent-amber); font-weight:600; text-transform:uppercase;">Python Tool Sandbox</div>
+                        <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">Math, analysis & visualizations</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7-Agent Architecture Section -->
+        <section id="agents" class="landing-section" style="border-top:1px solid var(--border-color);">
+            <div class="section-header-centered">
+                <div class="section-tag">LangGraph Orchestration Swarm</div>
+                <h2 class="section-title">The 7 Specialized Autonomous Agents</h2>
+                <p class="section-subtitle">
+                    Every task is decomposed, planned, executed, evaluated, and compiled by an ensemble of dedicated intelligence agents working in synergy.
+                </p>
+            </div>
+
+            <div class="agents-feature-grid">
+                <!-- Agent 1 -->
+                <div class="agent-feature-card">
+                    <div class="agent-card-icon-wrap" style="background:rgba(99,102,241,0.15); color:var(--primary);">🧠</div>
+                    <h3 class="agent-card-title">1. Memory Agent</h3>
+                    <span class="agent-card-role">Context & Personalization</span>
+                    <p class="agent-card-desc">Injects user preferences, custom formatting rules, profile facts, and conversation history into every execution run.</p>
+                </div>
+
+                <!-- Agent 2 -->
+                <div class="agent-feature-card">
+                    <div class="agent-card-icon-wrap" style="background:rgba(6,182,212,0.15); color:var(--accent-cyan);">🎯</div>
+                    <h3 class="agent-card-title">2. Task Understanding</h3>
+                    <span class="agent-card-role">Intent & Entity Extraction</span>
+                    <p class="agent-card-desc">Parses complex instructions, identifies explicit constraints, detects required tools, and structures execution objectives.</p>
+                </div>
+
+                <!-- Agent 3 -->
+                <div class="agent-feature-card">
+                    <div class="agent-card-icon-wrap" style="background:rgba(168,85,247,0.15); color:#c084fc);">🗺️</div>
+                    <h3 class="agent-card-title">3. Planner Agent</h3>
+                    <span class="agent-card-role">Dynamic DAG Generation</span>
+                    <p class="agent-card-desc">Constructs an optimal multi-step dependency graph, assigning tasks to execution tools with deterministic dependencies.</p>
+                </div>
+
+                <!-- Agent 4 -->
+                <div class="agent-feature-card">
+                    <div class="agent-card-icon-wrap" style="background:rgba(16,185,129,0.15); color:var(--accent-green);">⚙️</div>
+                    <h3 class="agent-card-title">4. Execution Agent</h3>
+                    <span class="agent-card-role">Sandboxed Tool Sandbox</span>
+                    <p class="agent-card-desc">Executes code, data analytics, chart generation, and file manipulation securely in an isolated environment.</p>
+                </div>
+
+                <!-- Agent 5 -->
+                <div class="agent-feature-card">
+                    <div class="agent-card-icon-wrap" style="background:rgba(245,158,11,0.15); color:var(--accent-amber);">🔍</div>
+                    <h3 class="agent-card-title">5. Research Agent</h3>
+                    <span class="agent-card-role">Vector RAG Knowledge</span>
+                    <p class="agent-card-desc">Performs semantic similarity searches over uploaded PDFs, DOCX, CSV, and text files using ChromaDB vector embeddings.</p>
+                </div>
+
+                <!-- Agent 6 -->
+                <div class="agent-feature-card">
+                    <div class="agent-card-icon-wrap" style="background:rgba(244,63,94,0.15); color:var(--accent-rose);">⚖️</div>
+                    <h3 class="agent-card-title">6. Evaluator Agent</h3>
+                    <span class="agent-card-role">Critic & Self-Correction</span>
+                    <p class="agent-card-desc">Critiques task outputs against user constraints, scores quality, and automatically triggers self-healing retries if criteria fail.</p>
+                </div>
+
+                <!-- Agent 7 -->
+                <div class="agent-feature-card">
+                    <div class="agent-card-icon-wrap" style="background:rgba(14,165,233,0.15); color:#38bdf8);">✨</div>
+                    <h3 class="agent-card-title">7. Response Agent</h3>
+                    <span class="agent-card-role">Executive Synthesis</span>
+                    <p class="agent-card-desc">Assembles verified results into rich markdown, downloadable PDF reports, email dispatches, and formatted visual artifacts.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tool Ecosystem Section -->
+        <section id="tools" class="landing-section" style="border-top:1px solid var(--border-color);">
+            <div class="section-header-centered">
+                <div class="section-tag">Extensible Capabilities</div>
+                <h2 class="section-title">Built-In Multi-Task Tool Ecosystem</h2>
+                <p class="section-subtitle">
+                    Autonomous agents utilize specialized tools to solve computations, query documents, and generate deliverables.
+                </p>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:1.5rem;">
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:1.5rem;">
+                    <div style="font-size:1.8rem; margin-bottom:0.75rem;">📊</div>
+                    <h3 style="font-size:1.1rem; color:#fff; margin-bottom:0.4rem;">Data Science & Visualization</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">Automated CSV ingestion, dataset statistical analysis, and customized matplotlib chart creation with user-defined color themes.</p>
+                </div>
+
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:1.5rem;">
+                    <div style="font-size:1.8rem; margin-bottom:0.75rem;">📚</div>
+                    <h3 style="font-size:1.1rem; color:#fff; margin-bottom:0.4rem;">ChromaDB Vector Retrieval (RAG)</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">Ingests documents, chunks with recursive boundary preservation, and performs targeted semantic searches over proprietary knowledge.</p>
+                </div>
+
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:1.5rem;">
+                    <div style="font-size:1.8rem; margin-bottom:0.75rem;">📧</div>
+                    <h3 style="font-size:1.1rem; color:#fff; margin-bottom:0.4rem;">Automated Email Dispatcher</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">Composes and dispatches professional executive reports with attachments, applying custom user email signatures automatically.</p>
+                </div>
+
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:1.5rem;">
+                    <div style="font-size:1.8rem; margin-bottom:0.75rem;">📄</div>
+                    <h3 style="font-size:1.1rem; color:#fff; margin-bottom:0.4rem;">PDF & Document Generation</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">Produces styled PDF deliverables and markdown files formatted to strict bullet-point and summary specifications.</p>
+                </div>
+
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:1.5rem;">
+                    <div style="font-size:1.8rem; margin-bottom:0.75rem;">⏱️</div>
+                    <h3 style="font-size:1.1rem; color:#fff; margin-bottom:0.4rem;">Recurring Automation & Cron</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">APScheduler background cron engine executing automated multi-step agent workflows on defined schedules.</p>
+                </div>
+
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:1.5rem;">
+                    <div style="font-size:1.8rem; margin-bottom:0.75rem;">🔊</div>
+                    <h3 style="font-size:1.1rem; color:#fff; margin-bottom:0.4rem;">Multi-Modal TTS & Audio</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">High-definition gTTS text-to-speech audio narration generation with inline media playback for any generated report.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Security & Vault Section -->
+        <section id="security" class="landing-section" style="border-top:1px solid var(--border-color);">
+            <div class="section-header-centered">
+                <div class="section-tag">Enterprise Protection & SQLite Vault</div>
+                <h2 class="section-title">Zero-Trust Security & Credential Vault</h2>
+                <p class="section-subtitle">
+                    Every credential, user preference, and execution trace is secured in our local SQLite database with 12-round salted bcrypt encryption and strict input validation rules.
+                </p>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.5rem;">
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:1.75rem;">
+                    <div style="font-size:2rem; margin-bottom:0.75rem;">🔐</div>
+                    <h3 style="font-size:1.15rem; color:#fff; margin-bottom:0.4rem;">12-Round Salted Bcrypt</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">Passwords are hashed with Blowfish-derived salt rounds before storage. Plaintext passwords are never logged, cached, or written to disk.</p>
+                </div>
+
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:1.75rem;">
+                    <div style="font-size:2rem; margin-bottom:0.75rem;">🛡️</div>
+                    <h3 style="font-size:1.15rem; color:#fff; margin-bottom:0.4rem;">Strict Input Validation Rules</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">Robust constraints enforce RFC-compliant emails, minimum 8-character passwords with uppercase, lowercase, numbers, and special symbols, plus SQL injection safeguards.</p>
+                </div>
+
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:1.75rem;">
+                    <div style="font-size:2rem; margin-bottom:0.75rem;">💾</div>
+                    <h3 style="font-size:1.15rem; color:#fff; margin-bottom:0.4rem;">Direct SQLite Database Connection</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">User accounts, personalized memory keys, execution audit logs, and schedule jobs are persisted directly in local ACID SQLite tables.</p>
+                </div>
+
+                <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:1.75rem;">
+                    <div style="font-size:2rem; margin-bottom:0.75rem;">🚪</div>
+                    <h3 style="font-size:1.15rem; color:#fff; margin-bottom:0.4rem;">Client-Side Auth Guards</h3>
+                    <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">Direct URL navigation to protected workspace routes (/dashboard) is automatically guarded and redirected to /login if unauthenticated.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Banner -->
+        <section class="landing-cta-banner">
+            <h2 style="font-size:2.3rem; font-weight:800; color:#fff; margin-bottom:0.75rem; letter-spacing:-0.02em;">
+                Ready to Experience Autonomous AI Workflows?
+            </h2>
+            <p style="font-size:1rem; color:var(--text-muted); max-width:600px; margin:0 auto 2rem auto; line-height:1.6;">
+                Create your account in seconds, define custom preferences, and launch the multi-agent execution studio.
+            </p>
+            <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;">
+                <a href="/signup" class="btn-hero-primary" style="padding:0.9rem 2.5rem; font-size:1.05rem;">
+                    <span>🚀 Create Your Free Account</span>
+                </a>
+                <a href="/login" class="btn-hero-secondary" style="padding:0.9rem 2rem; font-size:1.05rem;">
+                    <span>🔐 Sign In</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+        <div style="display:flex; justify-content:space-between; align-items:center; max-width:1100px; margin:0 auto; flex-wrap:wrap; gap:1rem;">
+            <div style="display:flex; align-items:center; gap:0.5rem;">
+                <div class="logo-badge" style="font-size:0.75rem; padding:2px 8px;">AGENTIC AI</div>
+                <span style="font-size:0.85rem; font-weight:600; color:var(--text-main);">Autonomous Multi-Task Execution Platform</span>
+            </div>
+            <div>
+                <span>Powered by LangGraph • ChromaDB • FastAPI • SQLite</span>
+            </div>
+            <div>
+                <a href="/login" style="color:var(--accent-cyan); text-decoration:none; margin-right:1rem; font-weight:600;">Sign In</a>
+                <a href="/signup" style="color:var(--primary); text-decoration:none; font-weight:600;">Sign Up</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script: Authentication State & Smooth Navbar Anchor Redirection -->
+    <script>
+        // Global Theme Management
+        function initTheme() {
+            const savedTheme = localStorage.getItem('agentic_ai_theme') || 'dark';
+            applyTheme(savedTheme);
+        }
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('agentic_ai_theme', theme);
+            const btn = document.getElementById('themeToggleBtn');
+            if (btn) {
+                btn.innerHTML = theme === 'light' ? '🌙' : '☀️';
+                btn.setAttribute('title', theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode');
+            }
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'dark';
+            applyTheme(current === 'light' ? 'dark' : 'light');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            // If logged in, show Dashboard button shortcut while keeping Sign In and Sign Up accessible
+            const rawUser = localStorage.getItem('agentic_ai_user');
+            if (rawUser) {
+                try {
+                    const user = JSON.parse(rawUser);
+                    if (user && user.id) {
+                        const dashLink = document.getElementById('navDashboardLink');
+                        if (dashLink) {
+                            dashLink.style.display = 'inline-flex';
+                        }
+                    }
+                } catch(e) {}
+            }
+
+            // Smooth scrolling with sticky navbar offset compensation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    if (!targetId || targetId === '#') return;
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        e.preventDefault();
+                        const navHeight = document.querySelector('.landing-navbar')?.offsetHeight || 75;
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - (navHeight + 15);
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                        history.pushState(null, null, targetId);
+                    }
+                });
+            });
+        });
+
+        // Handle initial load with anchor hash (e.g. /home#security)
+        window.addEventListener('load', () => {
+            if (window.location.hash) {
+                const targetElement = document.querySelector(window.location.hash);
+                if (targetElement) {
+                    setTimeout(() => {
+                        const navHeight = document.querySelector('.landing-navbar')?.offsetHeight || 75;
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - (navHeight + 15);
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }, 120);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

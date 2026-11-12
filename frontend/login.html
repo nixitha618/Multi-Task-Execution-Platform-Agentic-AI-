@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" class="auth-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Sign In — Agentic AI Platform</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Theme Initializer (Anti-flash) -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('agentic_ai_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+</head>
+<body class="auth-page-body">
+
+    <div class="auth-split-wrapper">
+
+        <!-- LEFT PANEL: SHOWCASE & STATS -->
+        <div class="auth-showcase-panel">
+            <div class="auth-showcase-top">
+                <!-- Brand Row -->
+                <div class="auth-brand-row" style="display:flex; justify-content:space-between; align-items:center;">
+                    <a href="/home" style="text-decoration:none; display:flex; align-items:center; gap:0.75rem;">
+                        <div class="logo-badge">AGENTIC AI</div>
+                        <!-- <span class="brand-title-large">Agentic AI</span> -->
+                    </a>
+                    <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Switch Light/Dark Mode" aria-label="Toggle Theme" style="padding:0.35rem 0.65rem;">
+                        ☀️
+                    </button>
+                </div>
+
+                <!-- Live Active Badge -->
+                <div class="live-pulse-badge">
+                    <span class="pulse-dot"></span>
+                    <span>Multi-Agent Swarm Ready</span>
+                </div>
+
+                <!-- Showcase Headline -->
+                <h1 class="showcase-hero-heading">
+                    Welcome back! 👋<br>
+                    Your <span class="gradient-word">agents</span> are waiting<br>
+                    to <span class="cyan-word">execute tasks.</span>
+                </h1>
+
+                <p class="showcase-tagline">
+                    Sign in with your registered email and password to resume workflows, access RAG vector memory, and inspect agent traces.
+                </p>
+
+                <!-- 2x2 Metric Grid -->
+                <div class="metric-grid-2x2">
+                    <div class="metric-card-item">
+                        <div class="metric-val">7 <span style="font-size:1.1rem; color:var(--primary);">🤖</span></div>
+                        <div class="metric-desc">Specialized Agent Swarm</div>
+                    </div>
+                    <div class="metric-card-item">
+                        <div class="metric-val">99.4% <span style="font-size:1.1rem; color:var(--accent-green);">⚡</span></div>
+                        <div class="metric-desc">Task Execution Precision</div>
+                    </div>
+                    <div class="metric-card-item">
+                        <div class="metric-val">Bcrypt <span style="font-size:1.1rem; color:var(--accent-cyan);">🔒</span></div>
+                        <div class="metric-desc">12-Round Salted Vault</div>
+                    </div>
+                    <div class="metric-card-item">
+                        <div class="metric-val">Real-Time <span style="font-size:1.1rem; color:var(--accent-amber);">⚡</span></div>
+                        <div class="metric-desc">ChromaDB RAG & Sandbox</div>
+                    </div>
+                </div>
+
+                <!-- Checkmarks -->
+                <div class="showcase-checkmarks">
+                    <div class="check-item">
+                        <span class="check-item-icon">✓</span>
+                        <span>Direct SQLite credential authentication with constant-time verification</span>
+                    </div>
+                    <div class="check-item">
+                        <span class="check-item-icon">✓</span>
+                        <span>Instant access to personalized user preferences & style rules</span>
+                    </div>
+                    <div class="check-item">
+                        <span class="check-item-icon">✓</span>
+                        <span>Seamless redirection into your autonomous multi-agent studio</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-showcase-footer">
+                <span>© 2026 Agentic AI Platform • Autonomous Multi-Task Execution</span>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL: LOGIN FORM -->
+        <div class="auth-form-panel">
+            <div class="auth-form-container">
+
+                <div class="auth-form-header">
+                    <h2 class="auth-form-title">Sign in to Platform 🔐</h2>
+                    <div class="auth-form-switch-prompt">
+                        Don't have an account yet? <a href="/signup">Create one now</a>
+                    </div>
+                </div>
+
+                <!-- Alert Message Banner -->
+                <div id="authAlertBanner" class="auth-alert" style="display:none;"></div>
+
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <!-- Identifier Field -->
+                    <div class="auth-form-group">
+                        <label for="loginIdentifier">Email or Username <span class="required">*</span></label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">✉️</span>
+                            <input type="text" id="loginIdentifier" placeholder="Enter your email or username" required autocomplete="username">
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="auth-form-group">
+                        <label for="loginPassword">Password <span class="required">*</span></label>
+                        <div class="input-with-icon">
+                            <span class="input-icon">🔒</span>
+                            <input type="password" id="loginPassword" placeholder="Enter your password" required autocomplete="current-password">
+                            <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility('loginPassword', this)" title="Show/Hide Password">👁️</button>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn-auth-action" id="btnLoginSubmit" style="background: linear-gradient(135deg, var(--primary) 0%, var(--accent-cyan) 100%); color: #fff;">
+                        <span id="btnLoginText">🔐 Sign In to Platform</span>
+                    </button>
+
+                    <div class="auth-terms-note">
+                        Protected by SQLite credential vault & 12-round salted bcrypt verification.<br>
+                        Need an account? <a href="/signup" style="color:var(--accent-cyan); font-weight:600; text-decoration:none;">Create account</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Client-side Login Script & Redirect -->
+    <script>
+        const API_BASE = '/api/v1';
+
+        // Global Theme Management
+        function initTheme() {
+            const savedTheme = localStorage.getItem('agentic_ai_theme') || 'dark';
+            applyTheme(savedTheme);
+        }
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('agentic_ai_theme', theme);
+            const btn = document.getElementById('themeToggleBtn');
+            if (btn) {
+                btn.innerHTML = theme === 'light' ? '🌙' : '☀️';
+                btn.setAttribute('title', theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode');
+            }
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'dark';
+            applyTheme(current === 'light' ? 'dark' : 'light');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+        });
+
+        function togglePasswordVisibility(inputId, btnEl) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            if (input.type === 'password') {
+                input.type = 'text';
+                btnEl.innerText = '🙈';
+            } else {
+                input.type = 'password';
+                btnEl.innerText = '👁️';
+            }
+        }
+
+        function showAlert(msg, type = 'error') {
+            const banner = document.getElementById('authAlertBanner');
+            if (!banner) return;
+            banner.className = `auth-alert ${type}`;
+            banner.innerText = msg;
+            banner.style.display = 'block';
+        }
+
+        function clearAlert() {
+            const banner = document.getElementById('authAlertBanner');
+            if (!banner) return;
+            banner.style.display = 'none';
+            banner.innerText = '';
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            clearAlert();
+
+            const identifier = document.getElementById('loginIdentifier')?.value.trim();
+            const password = document.getElementById('loginPassword')?.value;
+            const btn = document.getElementById('btnLoginSubmit');
+            const btnText = document.getElementById('btnLoginText');
+
+            if (!identifier || !password) {
+                showAlert("Please enter both email/username and password.", "error");
+                return;
+            }
+
+            btn.disabled = true;
+            btnText.innerText = "Verifying credentials...";
+
+            try {
+                const res = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email_or_username: identifier,
+                        password: password
+                    })
+                });
+
+                const data = await res.json();
+                if (!res.ok) {
+                    throw new Error(data.detail || "Invalid email/username or password.");
+                }
+
+                // Store user and token in localStorage
+                localStorage.setItem('agentic_ai_user', JSON.stringify(data.user));
+                if (data.token) {
+                    localStorage.setItem('agentic_ai_token', data.token);
+                }
+
+                showAlert("Authentication successful! Redirecting to dashboard...", "success");
+                btnText.innerText = "✓ Redirecting to Dashboard...";
+
+                // Redirect to dashboard immediately after login
+                setTimeout(() => {
+                    window.location.href = '/dashboard';
+                }, 600);
+
+            } catch (err) {
+                showAlert(err.message, "error");
+                btn.disabled = false;
+                btnText.innerText = "🔐 Sign In to Platform";
+            }
+        }
+    </script>
+</body>
+</html>

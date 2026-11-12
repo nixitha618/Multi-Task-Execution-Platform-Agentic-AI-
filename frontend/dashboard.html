@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic AI System for Autonomous Multi-Task Execution</title>
+    <link rel="stylesheet" href="/static/css/styles.css?v=2.6">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Theme Initializer (Anti-flash) -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('agentic_ai_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <!-- Authentication Guard -->
+    <script>
+        (function enforceAuth() {
+            const rawUser = localStorage.getItem('agentic_ai_user');
+            if (!rawUser) {
+                window.location.replace('/login');
+                return;
+            }
+            try {
+                const user = JSON.parse(rawUser);
+                if (!user || !user.id) {
+                    window.location.replace('/login');
+                }
+            } catch (e) {
+                window.location.replace('/login');
+            }
+        })();
+    </script>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <div class="logo-badge">AGENTIC AI</div>
+            <div class="logo-text">
+                <h1>Autonomous Multi-Task Execution Platform</h1>
+                <p>LangGraph Multi-Agent Orchestration • ChromaDB RAG • Tool Calling Ecosystem</p>
+            </div>
+        </div>
+        <div class="system-status">
+            <div class="status-pill">
+                <span class="status-dot"></span>
+                <span>FastAPI Engine Online</span>
+            </div>
+            <div class="status-pill">
+                <span>🤖 7 Active Agents</span>
+            </div>
+            <div class="status-pill" id="ragCountBadge">
+                <span>📚 0 RAG Chunks</span>
+            </div>
+
+            <!-- User Profile & Action Bar -->
+            <div class="user-auth-widget" id="userAuthWidget" style="display:flex; align-items:center; gap:0.65rem;">
+                <button class="theme-toggle-btn btn-secondary" onclick="toggleTheme()" title="Switch Light/Dark Mode" aria-label="Toggle Theme" style="padding:0.3rem 0.6rem; font-size:0.95rem; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center;">
+                    ☀️
+                </button>
+                <a href="/home" class="btn-secondary" style="padding:0.3rem 0.65rem; font-size:0.75rem; text-decoration:none; display:flex; align-items:center; gap:0.35rem;" title="View Project Overview & Features">
+                    <span>🏠</span>
+                    <span>Home</span>
+                </a>
+                <div id="authLoggedIn" style="display:flex; align-items:center; gap:0.6rem;">
+                    <div class="account-corner-container" style="position: relative;">
+                        <button class="account-btn" id="btnAccountMenu" onclick="toggleAccountDropdown(event)" title="Account" aria-label="Account Menu" aria-haspopup="true" aria-expanded="false">
+                            <div class="user-avatar chrome-avatar" id="userAvatar">U</div>
+                        </button>
+                        
+                        <!-- Account Details Dropdown Panel -->
+                        <div class="account-dropdown-panel" id="accountDropdownPanel" style="display: none;">
+                            <div class="account-dropdown-header">
+                                <div class="account-dropdown-avatar" id="accDropdownAvatar">U</div>
+                                <div class="account-dropdown-userinfo">
+                                    <h4 id="accDropdownName">User</h4>
+                                    <span class="account-status-badge">🟢 Active Account</span>
+                                </div>
+                            </div>
+                            
+                            <div class="account-details-grid">
+                                <div class="account-detail-row">
+                                    <span class="detail-label">📧 Email:</span>
+                                    <span class="detail-val" id="accDropdownEmail">--</span>
+                                </div>
+                                <div class="account-detail-row">
+                                    <span class="detail-label">👤 User ID:</span>
+                                    <span class="detail-val" id="accDropdownId" style="font-family:monospace; font-size:0.72rem;">--</span>
+                                </div>
+                                <div class="account-detail-row">
+                                    <span class="detail-label">📅 Member Since:</span>
+                                    <span class="detail-val" id="accDropdownCreated">--</span>
+                                </div>
+                                <div class="account-detail-row">
+                                    <span class="detail-label">🕒 Last Login:</span>
+                                    <span class="detail-val" id="accDropdownLastLogin">--</span>
+                                </div>
+                            </div>
+
+                            <div class="account-dropdown-actions">
+                                <button class="btn-account-tab-nav" onclick="switchToAccountTab()" title="Open Dedicated Account Tab">
+                                    <span>👤</span> Full Account Details
+                                </button>
+                                <button class="btn-account-logout" onclick="logoutUser()" title="Sign Out of Platform">
+                                    <span>🚪</span> Sign Out
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs-nav">
+        <button class="tab-btn active" data-tab="tab-studio">⚡ Workflow Studio</button>
+        <button class="tab-btn" data-tab="tab-rag">📚 Knowledge Base (RAG)</button>
+        <button class="tab-btn" data-tab="tab-tasks">📋 Task History</button>
+        <button class="tab-btn" data-tab="tab-memory">🧠 Memory & Personalization</button>
+        <button class="tab-btn" data-tab="tab-schedule">⏱️ Automation & Scheduler</button>
+        <button class="tab-btn" data-tab="tab-account" id="tabBtnAccount">👤 Account</button>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container">
+
+        <!-- TAB 1: WORKFLOW STUDIO -->
+        <section id="tab-studio" class="tab-pane active">
+            
+            <!-- 7-Agent Flow Visualizer -->
+            <div class="agents-visualizer">
+                <div class="agent-node" id="node-memory">
+                    <div class="agent-icon">🧠</div>
+                    <span class="agent-label">1. Memory Agent</span>
+                    <span class="agent-indicator">Context / DB</span>
+                </div>
+                <span class="agent-arrow">→</span>
+
+                <div class="agent-node" id="node-understand">
+                    <div class="agent-icon">🎯</div>
+                    <span class="agent-label">2. Task Understanding</span>
+                    <span class="agent-indicator">Intent / Entities</span>
+                </div>
+                <span class="agent-arrow">→</span>
+
+                <div class="agent-node" id="node-planner">
+                    <div class="agent-icon">🗺️</div>
+                    <span class="agent-label">3. Planner Agent</span>
+                    <span class="agent-indicator">DAG & Steps</span>
+                </div>
+                <span class="agent-arrow">→</span>
+
+                <div class="agent-node" id="node-exec">
+                    <div class="agent-icon">⚙️</div>
+                    <span class="agent-label">4. Execution Agent</span>
+                    <span class="agent-indicator">Tools / Sandbox</span>
+                </div>
+                <span class="agent-arrow">/</span>
+
+                <div class="agent-node" id="node-research">
+                    <div class="agent-icon">🔍</div>
+                    <span class="agent-label">5. Research Agent</span>
+                    <span class="agent-indicator">ChromaDB RAG</span>
+                </div>
+                <span class="agent-arrow">→</span>
+
+                <div class="agent-node" id="node-evaluator">
+                    <div class="agent-icon">⚖️</div>
+                    <span class="agent-label">6. Evaluator Agent</span>
+                    <span class="agent-indicator">Critic / Self-Retry</span>
+                </div>
+                <span class="agent-arrow">→</span>
+
+                <div class="agent-node" id="node-response">
+                    <div class="agent-icon">✨</div>
+                    <span class="agent-label">7. Response Agent</span>
+                    <span class="agent-indicator">Executive Output</span>
+                </div>
+            </div>
+
+            <!-- RAG Document Conversational Chatbot Card (Activates on RAG Document Query Preset) -->
+            <div class="card rag-chatbot-card" id="ragChatbotCard" style="display: none; margin-bottom: 1.5rem; border: 1px solid var(--accent-cyan); box-shadow: 0 0 25px rgba(6, 182, 212, 0.15);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.6rem;">
+                    <div style="display: flex; align-items: center; gap: 0.65rem;">
+                        <div class="rag-chat-robot-icon">🤖</div>
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <h2 class="card-title" style="margin-bottom: 0; font-size: 1.15rem;">RAG Document Conversational Chatbot</h2>
+                                <span class="rag-live-indicator" style="font-size: 0.7rem; color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 0.15rem 0.5rem; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.3); font-weight: 600;">● Continuous Multi-Turn Chat</span>
+                            </div>
+                            <p style="font-size: 0.78rem; color: var(--text-muted); margin: 0.15rem 0 0 0;">
+                                Grounded in ChromaDB vector knowledge. Ask follow-up questions sequentially—prior conversation context is remembered!
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
+                        <!-- Document Scope Filter -->
+                        <div style="display: flex; align-items: center; gap: 0.35rem; background: var(--bg-input); padding: 0.25rem 0.55rem; border-radius: 6px; border: 1px solid var(--border-color);">
+                            <label for="ragChatScopeSelect" style="font-size: 0.75rem; color: var(--accent-cyan); font-weight: 600;">Scope:</label>
+                            <select id="ragChatScopeSelect" style="background: transparent; border: none; color: var(--text-main); font-size: 0.78rem; cursor: pointer; max-width: 170px;" onchange="onRagChatScopeChanged()">
+                                <option value="">🌐 All Indexed Documents</option>
+                            </select>
+                        </div>
+                        <span id="ragChatChunkBadge" style="font-size: 0.72rem; color: var(--text-muted); background: rgba(255,255,255,0.06); padding: 0.25rem 0.5rem; border-radius: 6px; font-family: monospace;">📚 0 chunks</span>
+                        <button class="btn-secondary" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; margin: 0;" onclick="clearRagChatSession()" title="Reset conversation and start fresh thread">🔄 New Chat</button>
+                        <button class="btn-secondary" style="padding: 0.25rem 0.6rem; font-size: 0.75rem; margin: 0; color: var(--accent-rose); border-color: rgba(244,63,94,0.35);" onclick="exitRagChatbotMode()" title="Exit Chatbot Mode and return to Standard Task Mode">✕ Exit Chatbot</button>
+                    </div>
+                </div>
+
+                <!-- Chat Messages Scroll Container -->
+                <div id="ragChatThread" class="rag-chat-thread">
+                    <!-- Initial Welcome Greeting -->
+                    <div class="rag-chat-msg assistant">
+                        <div class="rag-msg-avatar">🤖</div>
+                        <div class="rag-msg-body">
+                            <div class="rag-msg-header">
+                                <span class="rag-msg-author">RAG Knowledge Assistant</span>
+                                <span class="rag-msg-time" id="ragInitialTime">Active</span>
+                            </div>
+                            <div class="rag-msg-text">
+                                👋 Welcome to the <strong>RAG Document Conversational Chatbot</strong>!<br><br>
+                                I am connected to your private indexed knowledge documents in ChromaDB with continuous session memory.<br>
+                                You can ask an initial question, and then ask follow-up questions in sequence (e.g. <em>"Can you elaborate on the second point?"</em>, <em>"What were the key metrics mentioned there?"</em>).<br><br>
+                                Click one of the suggestions below or type your question to start!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Suggested Quick Follow-Up Chips -->
+                <div class="rag-quick-chips" id="ragQuickChips">
+                    <span style="font-size: 0.75rem; color: var(--text-muted); align-self: center;">Suggestions:</span>
+                    <button type="button" class="rag-chip" onclick="askRagSuggested(this)">Search knowledge base for information on Agentic AI and summarize key concepts.</button>
+                    <button type="button" class="rag-chip" onclick="askRagSuggested(this)">What are the 7 agent roles and their responsibilities?</button>
+                    <button type="button" class="rag-chip" onclick="askRagSuggested(this)">Can you elaborate on the second point from your previous answer?</button>
+                    <button type="button" class="rag-chip" onclick="askRagSuggested(this)">What documents are currently indexed in the knowledge base?</button>
+                </div>
+
+                <!-- Interactive Chat Input Bar -->
+                <div class="rag-chat-input-bar">
+                    <div class="rag-input-wrapper">
+                        <textarea id="ragChatInput" class="rag-chat-textarea" placeholder="Ask a question about your documents or follow up on previous answers... (Press Enter to send, Shift+Enter for new line)" rows="1" onkeydown="handleRagInputKey(event)" oninput="autoGrowRagTextarea(this)"></textarea>
+                        <button type="button" class="btn-voice-rag" id="btnRagVoice" onclick="toggleRagVoiceInput()" title="Voice Dictation">🎙️</button>
+                    </div>
+                    <button type="button" class="btn-primary btn-rag-send" id="btnRagSend" onclick="sendRagChatMessage()">
+                        <span>💬 Ask Question</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Studio Input & Console Grid -->
+            <div class="grid-2" id="standardStudioGrid">
+                <!-- Prompt Input Card -->
+                <div class="card" id="taskPromptCard">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
+                        <h2 class="card-title" style="margin-bottom:0;"><span>💬</span> Task Specification & Prompt</h2>
+                        <div style="display:flex; align-items:center; gap:0.4rem;">
+                            <span id="sessionBadge" style="font-size:0.72rem; color:var(--text-muted); background:rgba(255,255,255,0.06); padding:0.25rem 0.5rem; border-radius:6px; font-family:monospace;" title="Current Session ID">Session: ...</span>
+                            <button class="btn-secondary" style="padding:0.25rem 0.6rem; font-size:0.75rem; margin:0;" onclick="startNewSession()" title="Start a fresh conversation session">🔄 New Chat</button>
+                            <button class="btn-secondary" style="padding:0.25rem 0.6rem; font-size:0.75rem; margin:0;" onclick="toggleChatHistoryModal()" title="View session chat history">📜 History</button>
+                        </div>
+                    </div>
+                    <textarea id="taskPrompt" class="prompt-box" placeholder="Enter instructions for the autonomous multi-agent workflow (e.g. math calculation, CSV analysis, RAG document search, report generation)..."></textarea>
+                    
+                    <div class="quick-prompts">
+                        <span style="font-size:0.75rem; color:var(--text-muted); align-self:center;">Quick Presets:</span>
+                        <span class="quick-tag" data-prompt="Analyze sales dataset, calculate monthly profit margins, generate a line chart, and produce an analytical report.">📈 Data Analysis & Chart</span>
+                        <span class="quick-tag" data-prompt="Calculate ((14500 * 1.15) - 3200) / 4 and show step-by-step arithmetic.">🔢 Math Calculation</span>
+                        <span class="quick-tag quick-tag-rag" id="presetRagTag" data-prompt="Search knowledge base for information on Agentic AI and summarize key concepts." onclick="activateRagChatbotPreset(event)" title="Click to launch interactive Conversational RAG Chatbot">🔍 RAG Document Query (Chatbot) 💬</span>
+                        <span class="quick-tag" data-prompt="Generate a markdown summary report of current project deliverables and send an email notification to user@example.com">📧 Report & Email</span>
+                        <span class="quick-tag" data-prompt="What was my previous question?">🧠 Previous Question</span>
+                    </div>
+
+                    <div style="display:flex; align-items:center; gap:0.6rem; margin-top:0.75rem; flex-wrap:wrap;">
+                        <label for="datasetFileInput" class="btn-secondary" style="cursor:pointer; display:inline-flex; align-items:center; gap:0.4rem; padding:0.45rem 0.85rem; font-size:0.8rem; margin:0;">
+                            <span>📎</span> Attach File (PDF / DOCX / TXT / CSV / Excel)
+                        </label>
+                        <input type="file" id="datasetFileInput" style="display:none;" accept=".csv,.xlsx,.xls,.json,.pdf,.docx,.txt" onchange="handleDatasetUpload(event)" />
+                        <span id="attachedDatasetBadge" style="display:none; font-size:0.8rem; color:var(--accent-cyan); background:rgba(6,182,212,0.1); border:1px solid rgba(6,182,212,0.3); padding:0.25rem 0.6rem; border-radius:12px;"></span>
+                        <button id="btnRemoveDataset" style="display:none; background:none; border:none; color:var(--accent-rose); cursor:pointer; font-weight:bold; font-size:0.9rem;" onclick="clearAttachedDataset()" title="Remove attached file">✕</button>
+                    </div>
+
+                    <div class="action-row">
+                        <button class="btn-primary" id="btnRunTask" onclick="submitTask()">🚀 Run Autonomous Task</button>
+                        <button class="btn-secondary" id="btnVoiceInput" onclick="toggleVoiceInput()" title="Speech-to-Text Input">🎙️ Voice Input</button>
+                    </div>
+                </div>
+
+                <!-- Live Stream Console Card -->
+                <div class="card">
+                    <h2 class="card-title"><span>📡</span> Real-Time Agent Execution Stream (SSE)</h2>
+                    <div class="console-box" id="liveConsole">
+                        <div class="log-entry">
+                            <span class="log-time">[Ready]</span>
+                            <span class="log-agent">&lt;System&gt;</span>
+                            <span class="log-msg">Agentic Orchestrator initialized. Waiting for task submission...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task Output Card -->
+            <div class="card" id="taskResultsCard" style="display: none; margin-top: 1.5rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
+                    <h2 class="card-title" style="margin-bottom:0;"><span>🎉</span> Autonomous Workflow Output & Artifacts</h2>
+                    <button class="btn-secondary" id="btnSpeakOutput" onclick="speakOutput()" title="Read Output Aloud">🔊 Read Aloud (TTS)</button>
+                </div>
+                <div id="resultsContent" class="output-markdown"></div>
+                <div id="chartPreview"></div>
+                <div id="artifactsList"></div>
+
+                <!-- Follow-Up Question Bar directly on Output -->
+                <div class="output-followup-bar" id="outputFollowupBar" style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 0.65rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                        <span style="font-size: 0.88rem; font-weight: 600; color: var(--accent-cyan); display: flex; align-items: center; gap: 0.4rem;">
+                            <span>💬</span> Ask a Follow-up Question:
+                        </span>
+                        <button type="button" class="btn-secondary" style="padding: 0.3rem 0.75rem; font-size: 0.8rem; margin: 0; color: var(--accent-cyan); border-color: rgba(6,182,212,0.4);" onclick="openChatbotFromOutput()" title="Switch to the full interactive continuous Chatbot">
+                            🤖 Open in Interactive RAG Chatbot 💬
+                        </button>
+                    </div>
+                    <div style="display: flex; gap: 0.6rem; align-items: center;">
+                        <input type="text" id="outputFollowupInput" class="prompt-box" style="margin-bottom: 0; padding: 0.65rem 0.9rem; font-size: 0.88rem; flex: 1;" placeholder="Type your follow-up question here (e.g. 'What is the course name?', 'Can you elaborate on that?')... (Press Enter to ask)" onkeydown="if(event.key==='Enter') submitOutputFollowup()" />
+                        <button type="button" class="btn-primary" style="white-space: nowrap; padding: 0.65rem 1.15rem; font-size: 0.88rem;" onclick="submitOutputFollowup()">
+                            🚀 Ask Follow-up
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- TAB 2: KNOWLEDGE BASE (RAG) -->
+        <section id="tab-rag" class="tab-pane">
+            <div class="grid-2">
+                <!-- Document Ingestion Card -->
+                <div class="card">
+                    <h2 class="card-title"><span>📤</span> Upload & Index Private Documents</h2>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">
+                        Supported formats: <strong>PDF, DOCX, TXT, CSV</strong>. Files are split into semantic chunks and embedded into persistent ChromaDB using Sentence-Transformers (<code>all-MiniLM-L6-v2</code>).
+                    </p>
+                    <input type="file" id="ragFileInput" class="btn-secondary" style="width:100%; margin-bottom:1rem;" accept=".pdf,.docx,.txt,.csv" />
+                    <button class="btn-primary" onclick="uploadDocument()">📥 Upload & Index into ChromaDB</button>
+                    <p id="ragUploadMsg" style="margin-top:0.75rem; font-size:0.85rem;"></p>
+                    
+                    <hr style="border:none; border-top:1px solid var(--border-color); margin:1.25rem 0;">
+                    
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+                        <h3 style="font-size:0.95rem; font-weight:600; margin:0; color:var(--text-main);">📚 Indexed Documents</h3>
+                        <button class="btn-secondary" onclick="clearEntireKnowledgeBase()" style="font-size:0.75rem; padding:0.25rem 0.5rem; color:var(--accent-rose); border-color:var(--accent-rose);" title="Clear entire ChromaDB knowledge base">🗑️ Clear All</button>
+                    </div>
+                    <p id="ragStatusText" style="font-size:0.82rem; color:var(--accent-cyan); margin-bottom:0.75rem;">Checking knowledge base index...</p>
+                    <div id="ragIndexedDocsList" style="max-height:180px; overflow-y:auto; border:1px solid var(--border-color); border-radius:6px; background:var(--bg-input); padding:0.5rem;">
+                        <p style="font-size:0.8rem; color:var(--text-muted); margin:0;">Loading indexed documents...</p>
+                    </div>
+                </div>
+
+                <!-- Query Testing Playground -->
+                <div class="card">
+                    <h2 class="card-title"><span>🔎</span> Semantic Retrieval Playground</h2>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.85rem;">
+                        Test vector search directly against ChromaDB. Scope searches to a specific uploaded document or query the entire collection globally.
+                    </p>
+
+                    <!-- Document Scope Selector -->
+                    <div style="margin-bottom:0.85rem; background:var(--bg-input); padding:0.65rem 0.75rem; border-radius:6px; border:1px solid var(--border-color);">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+                            <label for="ragDocumentScopeSelect" style="font-size:0.8rem; font-weight:600; color:var(--accent-cyan);">🎯 Target Document Scope:</label>
+                            <span id="activeDocScopeBadge" class="badge" style="background:rgba(56, 189, 248, 0.15); color:var(--accent-cyan); font-size:0.75rem; padding:2px 6px; border-radius:4px;">🌐 All Documents</span>
+                        </div>
+                        <div style="display:flex; gap:0.5rem; align-items:center;">
+                            <select id="ragDocumentScopeSelect" onchange="onRagScopeChanged()" style="flex:1; padding:0.45rem 0.6rem; background:var(--bg-card); color:var(--text-main); border:1px solid var(--border-color); border-radius:6px; font-size:0.85rem;">
+                                <option value="">🌐 All Indexed Documents (Global Search)</option>
+                            </select>
+                            <button class="btn-secondary" onclick="loadRagStatus()" title="Refresh document list" style="padding:0.45rem 0.65rem; font-size:0.85rem;">🔄</button>
+                        </div>
+                    </div>
+
+                    <input type="text" id="ragQueryInput" class="prompt-box" style="min-height:auto; height:45px; margin-bottom:0.75rem;" placeholder="Enter a search question or concept (e.g., skills, deliverables)..." onkeydown="if(event.key==='Enter') testRagQuery(false)" />
+                    
+                    <div style="display:flex; gap:0.5rem; margin-bottom:0.75rem;">
+                        <button class="btn-primary" onclick="testRagQuery(false)" style="flex:1;">🔍 Search Target Scope</button>
+                        <button class="btn-secondary" onclick="testRagQuery(true)" style="font-size:0.85rem;" title="Search all documents regardless of dropdown selection">🌐 Search All</button>
+                    </div>
+
+                    <div id="ragQueryResults" style="margin-top:0.75rem; max-height:260px; overflow-y:auto;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: TASK HISTORY -->
+        <section id="tab-tasks" class="tab-pane">
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h2 class="card-title"><span>📋</span> Execution History & Analytics</h2>
+                    <button class="btn-secondary" onclick="loadTasks()">🔄 Refresh</button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Task ID</th>
+                            <th>Prompt</th>
+                            <th>Status</th>
+                            <th>Type</th>
+                            <th>Created At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tasksTableBody">
+                        <tr><td colspan="6" style="text-align:center; color:var(--text-muted);">Loading task records...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- TAB 4: MEMORY & PERSONALIZATION -->
+        <section id="tab-memory" class="tab-pane">
+            <div class="grid-2">
+                <div class="card">
+                    <h2 class="card-title"><span>🧠</span> Add User Memory & Personalization</h2>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.75rem;">
+                        Save any custom preferences, styling directives, profile facts, or rules. All 7 platform agents dynamically respect these settings during task planning, research, synthesis, and tool execution.
+                    </p>
+
+                    <div style="margin-bottom: 0.9rem;">
+                        <span style="font-size: 0.78rem; font-weight: 600; color: var(--accent-cyan); display: block; margin-bottom: 0.4rem;">⚡ Quick Preset Suggestions:</span>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.35rem;">
+                            <button type="button" class="btn-secondary" style="padding: 0.2rem 0.55rem; font-size: 0.75rem; border-radius: 9999px;" onclick="setMemPreset('summary_style', 'Always give 5 short bullet points with key takeaways', 'preference')">📋 5-Bullet Summary</button>
+                            <button type="button" class="btn-secondary" style="padding: 0.2rem 0.55rem; font-size: 0.75rem; border-radius: 9999px;" onclick="setMemPreset('college', 'RGUKT Idupulapaya', 'fact')">🎓 College Fact</button>
+                            <button type="button" class="btn-secondary" style="padding: 0.2rem 0.55rem; font-size: 0.75rem; border-radius: 9999px;" onclick="setMemPreset('email_signature', 'Regards, Nixitha Unta (RGUKT RKV)', 'preference')">✉️ Email Signature</button>
+                            <button type="button" class="btn-secondary" style="padding: 0.2rem 0.55rem; font-size: 0.75rem; border-radius: 9999px;" onclick="setMemPreset('chart_theme', 'Use pink and yellow color for charts', 'preference')">📊 Pink & Yellow Charts</button>
+                            <button type="button" class="btn-secondary" style="padding: 0.2rem 0.55rem; font-size: 0.75rem; border-radius: 9999px;" onclick="setMemPreset('tone', 'Executive, concise, and structured', 'preference')">🎯 Tone Directives</button>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; gap:0.85rem;">
+                        <div>
+                            <label for="memCategory" style="display:block; font-size:0.8rem; font-weight:600; color:var(--text-muted); margin-bottom:0.35rem;">Category Type</label>
+                            <select id="memCategory" class="form-select">
+                                <option value="preference">User Preference (Styling, Formats, Tone, Themes)</option>
+                                <option value="fact">Profile & Identity Fact (College, Name, Role, Degree)</option>
+                                <option value="rule">Workflow Rule (Strict Operational Directives)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="memKey" style="display:block; font-size:0.8rem; font-weight:600; color:var(--text-muted); margin-bottom:0.35rem;">Preference / Fact Key</label>
+                            <input type="text" id="memKey" class="form-input-text" placeholder="e.g. summary_style, college, email_signature, chart_theme" />
+                        </div>
+                        <div>
+                            <label for="memValue" style="display:block; font-size:0.8rem; font-weight:600; color:var(--text-muted); margin-bottom:0.35rem;">Value / Directive</label>
+                            <textarea id="memValue" class="form-textarea" style="min-height:75px;" placeholder="e.g. Always give 5 short bullet points with key takeaways, RGUKT Idupulapaya, etc."></textarea>
+                        </div>
+                        <button class="btn-primary" onclick="addMemory()" style="justify-content:center; margin-top:0.25rem;">💾 Save Preference to Memory</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <h2 class="card-title" style="margin-bottom: 0;"><span>📚</span> Stored Memories & Preferences</h2>
+                        <button class="btn-secondary" style="padding: 0.25rem 0.65rem; font-size: 0.75rem;" onclick="loadMemories()">🔄 Refresh</button>
+                    </div>
+                    <div id="memoryList" style="max-height: 420px; overflow-y: auto;">
+                        <p style="color:var(--text-muted);">No memories stored yet.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: AUTOMATION & SCHEDULER -->
+        <section id="tab-schedule" class="tab-pane">
+            <div class="schedule-layout">
+                <div class="card">
+                    <h2 class="card-title"><span>⏰</span> Configure Scheduled Autonomous Workflow</h2>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem; line-height:1.4;">
+                        APScheduler triggers the 7-agent multi-task execution graph automatically according to your cron schedule.
+                    </p>
+                    <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                        <input type="text" id="schedName" class="form-input-text" placeholder="Job Name (e.g. Daily Market Summary)" />
+                        <input type="text" id="schedCron" class="form-input-text" placeholder="Cron Expression (e.g. 0 9 * * * or */10 * * * *)" />
+                        <textarea id="schedPrompt" class="form-textarea" style="min-height:90px;" placeholder="Workflow prompt to execute autonomously on schedule (e.g. Generate a markdown summary report...)"></textarea>
+                        <button class="btn-primary" onclick="createSchedule()" style="justify-content:center;">⏱️ Schedule Recurring Task</button>
+                    </div>
+                </div>
+
+                <div class="card" style="min-width:0;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+                        <h2 class="card-title" style="margin-bottom:0;"><span>⚡</span> Active Scheduled Jobs</h2>
+                        <button class="btn-secondary" style="padding:0.25rem 0.65rem; font-size:0.75rem;" onclick="loadSchedules()">🔄 Refresh</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th style="min-width:140px;">Job Name</th>
+                                    <th style="min-width:100px;">Cron</th>
+                                    <th style="min-width:320px;">Workflow Prompt</th>
+                                    <th style="min-width:95px;">Status</th>
+                                    <th style="min-width:210px; text-align:right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scheduleTableBody">
+                                <tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:2rem;">No scheduled workflows configured.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 6: ACCOUNT DETAILS & SECURITY -->
+        <section id="tab-account" class="tab-pane">
+            <div class="card" style="max-width: 820px; margin: 0 auto;">
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); padding-bottom:1.25rem; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
+                    <div style="display:flex; align-items:center; gap:1.15rem;">
+                        <div class="user-avatar" id="accTabAvatar" style="width:58px; height:58px; border-radius:50%; font-size:1.6rem; font-weight:700; background:linear-gradient(135deg, var(--primary), var(--accent-cyan)); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow:0 4px 12px rgba(99,102,241,0.35);">U</div>
+                        <div>
+                            <h2 style="font-size:1.35rem; font-weight:700; color:var(--text-main); margin-bottom:0.25rem;" id="accTabName">User Account</h2>
+                            <span class="status-pill" style="font-size:0.75rem; padding:0.2rem 0.6rem; background:rgba(16, 185, 129, 0.1); border-color:var(--accent-green); color:var(--accent-green); font-weight:600;">🟢 Active Authenticated Session</span>
+                        </div>
+                    </div>
+                    <button class="btn-secondary" onclick="logoutUser()" style="color:var(--accent-rose); border-color:var(--accent-rose); padding:0.45rem 1rem; font-weight:600; cursor:pointer; font-size:0.85rem;" title="Sign out of current account">
+                        🚪 Sign Out
+                    </button>
+                </div>
+
+                <h3 style="font-size:1.05rem; font-weight:600; margin-bottom:1.15rem; color:var(--text-main);">📋 User Information & Security Credentials</h3>
+                
+                <div class="account-info-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:1rem; margin-bottom:1.75rem;">
+                    <div class="account-info-card" style="background:var(--bg-input); padding:1rem 1.15rem; border-radius:8px; border:1px solid var(--border-color);">
+                        <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; font-weight:600; margin-bottom:0.35rem;">Email Address</div>
+                        <div style="font-size:0.95rem; font-weight:600; color:var(--text-main);" id="accTabEmail">--</div>
+                    </div>
+                    <div class="account-info-card" style="background:var(--bg-input); padding:1rem 1.15rem; border-radius:8px; border:1px solid var(--border-color);">
+                        <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; font-weight:600; margin-bottom:0.35rem;">Username / ID</div>
+                        <div style="font-size:0.95rem; font-weight:600; color:var(--text-main); font-family:monospace;" id="accTabUsername">--</div>
+                    </div>
+                    <div class="account-info-card" style="background:var(--bg-input); padding:1rem 1.15rem; border-radius:8px; border:1px solid var(--border-color);">
+                        <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; font-weight:600; margin-bottom:0.35rem;">Account Created (IST)</div>
+                        <div style="font-size:0.95rem; font-weight:600; color:var(--text-main);" id="accTabCreated">--</div>
+                    </div>
+                    <div class="account-info-card" style="background:var(--bg-input); padding:1rem 1.15rem; border-radius:8px; border:1px solid var(--border-color);">
+                        <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; font-weight:600; margin-bottom:0.35rem;">Last Login (IST)</div>
+                        <div style="font-size:0.95rem; font-weight:600; color:var(--text-main);" id="accTabLastLogin">--</div>
+                    </div>
+                    <div class="account-info-card" style="background:var(--bg-input); padding:1rem 1.15rem; border-radius:8px; border:1px solid var(--border-color);">
+                        <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; font-weight:600; margin-bottom:0.35rem;">Credential Security</div>
+                        <div style="font-size:0.95rem; font-weight:600; color:var(--accent-green);">SQLite Database (12-Round Bcrypt Salt)</div>
+                    </div>
+                    <div class="account-info-card" style="background:var(--bg-input); padding:1rem 1.15rem; border-radius:8px; border:1px solid var(--border-color);">
+                        <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; font-weight:600; margin-bottom:0.35rem;">Active Session Token</div>
+                        <div style="font-size:0.85rem; font-weight:600; color:var(--accent-cyan); font-family:monospace;" id="accTabToken">--</div>
+                    </div>
+                </div>
+
+                <div style="padding:1.25rem 1.5rem; background:rgba(239, 68, 68, 0.05); border:1px solid rgba(239, 68, 68, 0.25); border-radius:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+                    <div>
+                        <h4 style="font-size:0.95rem; font-weight:600; color:var(--text-main); margin-bottom:0.25rem;">Session Termination & Sign Out</h4>
+                        <p style="font-size:0.82rem; color:var(--text-muted); margin:0;">End your current active session on this device and return securely to the home screen.</p>
+                    </div>
+                    <button class="btn-primary" onclick="logoutUser()" style="background:var(--accent-rose); border-color:var(--accent-rose); font-size:0.85rem; padding:0.55rem 1.25rem;">
+                        🚪 Sign Out of Account
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Chat History Modal -->
+    <div id="chatHistoryModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.65); backdrop-filter:blur(5px); z-index:9999; align-items:center; justify-content:center;">
+        <div class="card" style="width:90%; max-width:700px; max-height:82vh; display:flex; flex-direction:column; box-shadow:0 12px 36px rgba(0,0,0,0.6); margin:0;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1px solid var(--border-color); padding-bottom:0.75rem;">
+                <h2 class="card-title" style="margin-bottom:0;"><span>📜</span> Session Conversation History</h2>
+                <div style="display:flex; gap:0.5rem;">
+                    <button class="btn-secondary" style="padding:0.25rem 0.6rem; font-size:0.75rem;" onclick="clearActiveSessionHistory()">🗑️ Clear History</button>
+                    <button class="btn-secondary" style="padding:0.25rem 0.6rem; font-size:0.75rem;" onclick="toggleChatHistoryModal()">✕ Close</button>
+                </div>
+            </div>
+            <div id="chatHistoryModalList" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:0.85rem; padding-right:0.5rem; max-height:60vh;">
+                <p style="color:var(--text-muted); font-size:0.85rem;">No conversation messages in this session yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Task Inspection Modal (In-place inspection without studio redirect) -->
+    <div id="taskInspectionModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.75); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center;" onclick="if(event.target===this) closeTaskInspectionModal()">
+        <div class="card" style="width:90%; max-width:850px; max-height:88vh; display:flex; flex-direction:column; box-shadow:0 16px 48px rgba(0,0,0,0.7); margin:0; border:1px solid var(--border-color); background:var(--bg-card);">
+            <!-- Modal Header -->
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1px solid var(--border-color); padding-bottom:0.75rem;">
+                <div style="display:flex; align-items:center; gap:0.6rem;">
+                    <h2 class="card-title" style="margin-bottom:0; font-size:1.15rem;"><span>🔍</span> Task Inspection</h2>
+                    <code id="inspectTaskIdBadge" style="font-size:0.8rem; background:var(--bg-input); padding:2px 8px; border-radius:4px; color:var(--accent-cyan); border:1px solid var(--border-color);"></code>
+                    <span id="inspectTaskStatusBadge" class="badge-status" style="font-size:0.75rem;"></span>
+                </div>
+                <div style="display:flex; gap:0.5rem; align-items:center;">
+                    <button class="btn-secondary" style="padding:0.3rem 0.7rem; font-size:0.75rem;" onclick="copyInspectTaskOutput()">📋 Copy Output</button>
+                    <button class="btn-secondary" style="padding:0.3rem 0.7rem; font-size:0.75rem;" onclick="closeTaskInspectionModal()">✕ Close</button>
+                </div>
+            </div>
+
+            <!-- Modal Content (Scrollable) -->
+            <div id="taskInspectionBody" style="flex:1; overflow-y:auto; padding-right:0.5rem; display:flex; flex-direction:column; gap:1rem;">
+                <!-- Prompt Section -->
+                <div style="background:var(--bg-input); padding:0.85rem 1rem; border-radius:8px; border-left:4px solid var(--accent-cyan);">
+                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:0.3rem;">User Prompt</div>
+                    <div id="inspectTaskPrompt" style="font-size:0.95rem; color:#f1f5f9; font-weight:500; line-height:1.4;"></div>
+                    <div id="inspectTaskMeta" style="margin-top:0.5rem; font-size:0.78rem; color:var(--text-muted); display:flex; gap:1.2rem; flex-wrap:wrap;"></div>
+                </div>
+
+                <!-- Execution Steps -->
+                <div id="inspectTaskStepsContainer" style="display:none; background:var(--bg-input); padding:0.75rem 1rem; border-radius:8px; border:1px solid var(--border-color);">
+                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:0.5rem;">Agent Execution Steps</div>
+                    <div id="inspectTaskStepsList" style="display:flex; flex-direction:column; gap:0.4rem;"></div>
+                </div>
+
+                <!-- Output Section -->
+                <div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                        <span style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Generated Workflow Output</span>
+                        <button class="btn-secondary" id="btnSpeakInspectOutput" style="padding:0.2rem 0.5rem; font-size:0.72rem;" onclick="speakInspectOutput()">🔊 Read Aloud</button>
+                    </div>
+                    <div id="inspectTaskOutputContent" class="output-markdown" style="background:var(--bg-input); padding:1rem; border-radius:8px; border:1px solid var(--border-color); max-height:45vh; overflow-y:auto;"></div>
+                </div>
+
+                <!-- Artifacts / Visualizations Section -->
+                <div id="inspectTaskArtifactsContainer" style="display:none;">
+                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:0.5rem;">Generated Artifacts & Documents</div>
+                    <div id="inspectTaskArtifactsList" style="display:flex; flex-wrap:wrap; gap:0.6rem;"></div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div style="margin-top:1rem; border-top:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center; padding-top:0.75rem;">
+                <span style="font-size:0.78rem; color:var(--text-muted);">Inspection view strictly confined to Task History.</span>
+                <div style="display:flex; gap:0.5rem;">
+                    <button class="btn-secondary" id="btnOpenInStudio" style="font-size:0.75rem; padding:0.35rem 0.8rem;" onclick="openCurrentTaskInStudio()" title="Optionally load this task's results into Workflow Studio">🚀 Open in Studio</button>
+                    <button class="btn-primary" style="font-size:0.75rem; padding:0.35rem 1rem;" onclick="closeTaskInspectionModal()">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <script src="/static/js/app.js?v=2.6"></script>
+</body>
+</html>
